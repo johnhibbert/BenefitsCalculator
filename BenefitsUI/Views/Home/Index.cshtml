@@ -1,0 +1,60 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model BenefitsConsole.Models.BenefitsViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Benefits Console</h1>
+    <p></p>
+</div>
+
+<h2 class="display-4"><b>Check out the BenefitsBlazor project  for a fully working version of this.</b></h2>
+<h3>
+    This was my first attempt doing this with MVC, but I couldn't understand the manual JS binding I could find online.
+    It turns out I had my MVC, Razor and Blazor confused, since I learned them all in one big pile some time ago and never used them.
+    I left it in here for posterity.
+    You can change this by altering the code in the Index method in the HomeController
+</h3>
+
+
+<table>
+    <tr>
+        <td><b>Employee Name:</b></td>
+        <td>
+            @*Html.TextBoxFor(m => m.EmployeeName, new { maxlength = "255", size = "255" })*@
+            @Html.TextBoxFor(m => m.EmployeeName)
+            @*Html.ValidationMessageFor(m => m.EmployeeName)*@
+        </td>
+    </tr>
+</table>
+
+@if (Model != null && Model.DependentNames != null)
+{
+    foreach (var item in Model.DependentNames)
+    {
+        <table>
+            <tr>
+                <td><b>Dependent Name:</b></td>
+                <td>
+                    @*Html.TextBoxFor(item => item, new { maxlength = "50", size = "50" })*@
+                    @Html.TextBoxFor(m => item)
+                    @*Html.ValidationMessageFor(item => item)*@
+                </td>
+            </tr>
+        </table>
+
+    }
+
+    <table>
+        <tr>
+            <td><b>Cost</b></td>
+            <td>
+                @Model.BenefitsCost
+            </td>
+        </tr>
+    </table>
+}
+
+
+

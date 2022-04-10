@@ -1,0 +1,71 @@
+﻿@page "/"
+
+
+<h1>Benefits Portal</h1>
+
+<button class="btn btn-primary" @onclick="AddDependent">Add Dependent</button>
+
+<table>
+    <tr>
+        <td><b>Employee Name:</b></td>
+        <td>
+            <input @bind="_emp.Name" />
+        </td>
+    </tr>
+</table>
+
+
+@foreach (var dependent in _emp.Dependents)
+{
+    <tr>
+        <td>
+        <td><b>Dependent Name:</b></td>
+        <td>
+            <input @bind="dependent.Name" />
+            <button class="btn btn-primary" @onclick="@(() => { RemoveThisDependent(dependent); })">Remove Dependent</button>
+        </td>
+        </td>
+    </tr>
+}
+
+<button class="btn btn-primary" @onclick="GetCost">Get Cost</button>
+
+<p>Cost: @_cost</p>
+
+@code {
+
+    private static BenefitsCalculator.BenefitsCalculator _calc
+    = new BenefitsCalculator.BenefitsCalculator
+    (
+        new BenefitsCalculator.Services.Debug.DebugCostService(),
+        new BenefitsCalculator.Services.Debug.DebugPayrollService()
+    );
+
+    private static BenefitsCalculator.Model.Employee _emp
+    = new BenefitsCalculator.Model.Employee()
+    {
+        Name = string.Empty,
+        Dependents = new List<BenefitsCalculator.Model.Dependent>()
+    };
+
+    private void AddDependent()
+    {
+        _emp.Dependents.Add(new BenefitsCalculator.Model.Dependent());
+    }
+
+    private void RemoveThisDependent(BenefitsCalculator.Model.Dependent toRemove)
+    {
+        _emp.Dependents.Remove(toRemove);
+    }
+
+    //private void Run
+
+    private double _cost;
+
+    private void GetCost()
+    {
+        var answer = _calc.GetBenefitsCostForEmployee(_emp);
+        _cost = answer;
+    }
+
+}
